@@ -105,7 +105,7 @@ impl<'de> Deserialize<'de> for Txid {
         let decoded = hex::decode(&hex_str).map_err(serde::de::Error::custom)?;
         if decoded.len() != 32 {
             return Err(serde::de::Error::custom(
-                "Txid must be exactly 32 bytes (64 hex characters)",
+                "Txid must be exactly 32 bytes i.e 64 hex characters",
             ));
         }
         let mut txid = [0u8; 32];
@@ -348,13 +348,14 @@ impl fmt::Display for BitcoinTransaction {
         // TODO: Format a user-friendly string showing version, inputs, lock_time
         // Display scriptSig length and bytes, and previous output info
         writeln!(f, "BitcoinTransaction:")?;
-        writeln!(f, "  Version: {}", self.version)?;
-        writeln!(f, "  Lock Time: {}", self.lock_time)?;
-        writeln!(f, "  Inputs ({}):", self.inputs.len())?;
+        writeln!(f, "Version: {}", self.version)?;
+        writeln!(f, "Lock Time: {}", self.lock_time)?;
+        writeln!(f, "Inputs ({}):", self.inputs.len())?;
         for (i, input) in self.inputs.iter().enumerate() {
             writeln!(f, "    Input {}:", i)?;
             writeln!(
-                f,  "      Previous Output Txid: {}",
+                f,
+                "      Previous Output Txid: {}",
                 hex::encode(input.previous_output.txid.0)
             )?;
             writeln!(
